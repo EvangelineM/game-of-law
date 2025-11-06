@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { 
-  ChevronLeft, 
+import {
+  ChevronLeft,
   ChevronRight,
   BookOpen,
   Bookmark,
@@ -24,17 +24,17 @@ const Modules = () => {
 
   // Number of cards to display at once
   const displayCount = Math.min(3, modules.length);
-  
+
   // Function to handle next slide
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) => 
+    setCurrentIndex((prevIndex) =>
       prevIndex + 1 >= modules.length ? 0 : prevIndex + 1
     );
   };
 
   // Function to handle previous slide
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) => 
+    setCurrentIndex((prevIndex) =>
       prevIndex - 1 < 0 ? modules.length - 1 : prevIndex - 1
     );
   };
@@ -88,14 +88,14 @@ const Modules = () => {
           {modules.length > displayCount && (
             <>
               {/* Carousel Controls */}
-              <button 
+              <button
                 onClick={prevSlide}
                 className="absolute left-0 top-1/2 -translate-y-1/2 bg-amber-600 hover:bg-amber-700 text-white p-2 rounded-full z-10"
               >
                 <ChevronLeft className="w-6 h-6" />
               </button>
-              
-              <button 
+
+              <button
                 onClick={nextSlide}
                 className="absolute right-0 top-1/2 -translate-y-1/2 bg-amber-600 hover:bg-amber-700 text-white p-2 rounded-full z-10"
               >
@@ -115,7 +115,7 @@ const Modules = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: index * 0.1 }}
                   className="bg-white rounded-2xl shadow-lg border border-stone-200 overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:scale-[1.02]"
-                  onClick={() => navigate('/modules')}
+                  onClick={() => navigate(`/modules/${module.id}`)}
                 >
                   <div className="h-32 bg-gradient-to-r from-amber-500 to-amber-700 flex items-center justify-center">
                     <ModuleIcon className="w-16 h-16 text-white" />
@@ -123,7 +123,7 @@ const Modules = () => {
                   <div className="p-6">
                     <h3 className="text-xl font-bold text-stone-800 mb-2">{module.title}</h3>
                     <p className="text-stone-600 mb-4">{module.description}</p>
-                    
+
                     <div className="flex justify-between items-center pt-4 border-t border-stone-100">
                       <div className="text-sm text-amber-700 font-medium">
                         {module.lessons.length} lessons

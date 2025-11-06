@@ -21,6 +21,8 @@ import CardMatchingGame from "./components/CardMatchingGame";
 import SituationBasedGame from "./components/SituationBasedGame";
 import SituationGameWithLives from "./components/SituationGameWithLives";
 import ConstitutionalCrossword from "./components/ConstitutionalCrossword";
+import ModuleDetails from './components/ModuleDetails';
+import LessonDetail from './components/LessonDetail';
 import Games from "./components/Games";
 import Modules from "./components/Modules";
 
@@ -37,11 +39,11 @@ function AppContent() {
         if (!user.isLoggedIn) {
             return <Navigate to="/login" replace />;
         }
-        
+
         if (!user.ageGroup || !user.name) {
             return <Navigate to="/age-selection" replace />;
         }
-        
+
         return children;
     };
 
@@ -54,7 +56,7 @@ function AppContent() {
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/age-selection" element={<AgeGroupSelection onComplete={() => navigate('/dashboard')} />} />
-                    
+
                     {/* Protected routes - require login and age selection */}
                     <Route path="/dashboard" element={
                         <ProtectedRoute>
@@ -111,6 +113,9 @@ function AppContent() {
                             <SituationGameWithLives />
                         </ProtectedRoute>
                     } />
+                    <Route path="/modules" element={<Modules />} />
+                    <Route path="/modules/:moduleId" element={<ModuleDetails />} />
+                    <Route path="/modules/:moduleId/lesson/:lessonId" element={<LessonDetail />} />
                 </Routes>
             </div>
             {/* {user.isLoggedIn && user.name && user.ageGroup && <Footer />} */}
