@@ -15,7 +15,10 @@ def user_helper(user_doc):
         "username": user_doc.get("username"),
         "ageGroup": user_doc.get("ageGroup", "adult"),  # Default to adult if not specified
         "created_at": user_doc.get("created_at"),
-        "hashed_password": user_doc.get("hashed_password")
+        "hashed_password": user_doc.get("hashed_password"),
+        "totalXP": user_doc.get("xp", 0),
+        "currentLevel": user_doc.get("level", 1),
+        "last_active_date": user_doc.get("last_active_date")
     }
 
 async def get_user_by_email(email: str):
@@ -41,7 +44,10 @@ async def create_user(user):
         "username": user.username,
         "hashed_password": hashed,
         "ageGroup": user.ageGroup,
-        "created_at": datetime.utcnow()
+        "created_at": datetime.utcnow(),
+        "xp": 0,
+        "level": 1,
+        "last_active_date": datetime.utcnow()
     }
     result = await db.users.insert_one(user_dict)
     created = await db.users.find_one({"_id": result.inserted_id})
