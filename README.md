@@ -1,53 +1,185 @@
-# Getting Started with Create React App
+# Game of Law: Constitution Learning Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An interactive, gamified platform to learn about the Indian Constitution through games, quizzes, and AI-generated content.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- 🎮 **Interactive Games**: Spin wheel, card matching, crossword puzzles, and situation-based games
+- 📚 **Learning Modules**: Comprehensive content about the Indian Constitution
+- 🤖 **AI Content Generation**: Dynamic content creation using Google Gemini AI
+- 🏆 **Gamification**: XP system, levels, leaderboards, and achievements
+- 👥 **Multi-age Support**: Content tailored for children, teens, and adults
+- 📊 **Progress Tracking**: Detailed analytics and personalized recommendations
 
-### `npm start`
+## Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Frontend**: React.js with Tailwind CSS
+- **Backend**: FastAPI with Python
+- **Database**: MongoDB
+- **AI**: Google Gemini AI for content generation
+- **Authentication**: JWT tokens
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Project Structure
 
-### `npm test`
+```
+game-of-law/
+├── frontend/          # React frontend
+│   ├── src/
+│   │   ├── components/    # React components
+│   │   ├── contexts/      # React contexts
+│   │   └── data/          # Static data files
+│   └── package.json
+├── backend/           # FastAPI backend
+│   ├── app/
+│   │   ├── main.py        # FastAPI app
+│   │   ├── models.py      # Pydantic models
+│   │   ├── ai.py          # AI integration
+│   │   └── ...
+│   ├── requirements.txt
+│   └── .env
+└── README.md
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Quick Start
 
-### `npm run build`
+### Prerequisites
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Node.js (v16 or higher)
+- Python (v3.8 or higher)
+- MongoDB
+- Google Gemini AI API key (for AI features)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 1. Clone and Setup
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+# Clone the repository
+git clone <repository-url>
+cd game-of-law
 
-### `npm run eject`
+# Setup backend
+cd backend
+pip install -r requirements.txt
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+# Setup frontend
+cd ../frontend
+npm install
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 2. Environment Configuration
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### Backend (.env)
+```bash
+MONGODB_URL=mongodb://localhost:27017
+DATABASE_NAME=constitution_db
+AI_API_KEY=your_gemini_api_key_here
+JWT_SECRET=your_jwt_secret_here
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#### Frontend
+The frontend uses a proxy to the backend, configured in `frontend/package.json`.
 
-## Learn More
+### 3. Start MongoDB
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+# Using Docker
+docker run -d -p 27017:27017 --name mongodb mongo:7.0
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Or using Docker Compose (from backend directory)
+cd backend
+docker-compose up -d mongodb
+```
 
-### Code Splitting
+### 4. Start the Application
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+# Terminal 1: Start backend
+cd backend
+uvicorn app.main:app --reload
+
+# Terminal 2: Start frontend
+cd frontend
+npm start
+```
+
+Visit `http://localhost:3000` to access the application.
+
+## AI Content Generation Setup
+
+1. Get a Google Gemini AI API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Add the key to `backend/.env`:
+   ```
+   AI_API_KEY=your_actual_api_key_here
+   ```
+3. Restart the backend server
+4. Access the AI Content Generator from the navigation menu
+
+### AI Features
+
+- **Dynamic Questions**: Generate multiple-choice questions on any constitutional topic
+- **Real Scenarios**: Create situation-based learning content
+- **Explanations**: Get comprehensive explanations with examples
+- **Fun Facts**: Generate interesting constitutional facts
+
+## API Documentation
+
+### Authentication Endpoints
+- `POST /token` - Login
+- `POST /register` - Register new user
+- `GET /users/me` - Get current user info
+
+### Content Endpoints
+- `GET /content/{topic}` - Get learning content
+- `GET /quizzes/{topic}` - Get quiz questions
+
+### AI Endpoints
+- `GET /ai/topics` - Get available topics for AI generation
+- `POST /ai/generate-content` - Generate AI content
+
+### Game Endpoints
+- `POST /log-activity` - Log user activities and award XP
+- `GET /user-stats` - Get user statistics and recommendations
+
+## Development
+
+### Running Tests
+
+```bash
+# Backend tests
+cd backend
+python test_ai_integration.py
+
+# Frontend tests
+cd frontend
+npm test
+```
+
+### Building for Production
+
+```bash
+# Build frontend
+cd frontend
+npm run build
+
+# Build backend (if needed)
+cd backend
+# The FastAPI app is ready for production as-is
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.
+
+## Support
+
+For questions or issues, please open an issue on GitHub or contact the development team.
 
 ### Analyzing the Bundle Size
 

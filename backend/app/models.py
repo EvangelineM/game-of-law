@@ -96,3 +96,10 @@ class UserStats(BaseModel):
     recent_activities: List[Dict[str, Any]]
     streak_count: int
     suggested_difficulty: str
+
+class AIContentRequest(BaseModel):
+    topic: str
+    content_type: Literal["questions", "scenarios", "explanation", "facts"]
+    difficulty: Optional[Literal["easy", "medium", "hard"]] = "medium"
+    count: Optional[int] = 5
+    age_group: Optional[Literal["child", "teen", "adult"]] = "teen"
