@@ -1,12 +1,10 @@
 from fastapi import FastAPI, BackgroundTasks, HTTPException, Depends, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from app.db import connect_to_mongo, close_mongo_connection, get_database
-from app.models import Content, ContentWithItems, UserCreate, Token, UserPublic, LogActivityRequest, UserActivity, UserActivityItem, AIContentRequest
+from app.models import Content, ContentWithItems, UserCreate, Token, UserPublic, LogActivityRequest, UserActivity, UserActivityItem
 from app.crud import create_content, get_content_with_items, get_user_by_email, create_user
 from app.auth import authenticate_user, create_access_token, get_current_user
-from app.generate import generate_questions_from_content, generate_scenarios_from_content
 from app.config import settings
-from app.ai import generate_legal_content, get_available_topics
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import datetime, timedelta
 from motor.motor_asyncio import AsyncIOMotorDatabase
@@ -152,30 +150,12 @@ async def read_users_me(current_user = Depends(get_current_user)):
     return UserPublic(**current_user)
 
 @app.post("/content", response_model=str)
-async def add_content(content: Content, background_tasks: BackgroundTasks):
+async def add_content(content: Content):
     """
     Add new content to the database.
-    Triggers background task to generate questions and scenarios.
     """
     content_id = await create_content(content)
-    content.id = content_id
-    # Add background task for generation
-    background_tasks.add_task(generate_and_save_items, content)
     return content_id
-
-async def generate_and_save_items(content: Content):
-    """
-    Background task to generate and save questions and scenarios.
-    """
-    from app.crud import create_question, create_scenario
-    questions = await generate_questions_from_content(content)
-    scenarios = await generate_scenarios_from_content(content)
-    
-    for question in questions:
-        await create_question(question)
-    
-    for scenario in scenarios:
-        await create_scenario(scenario)
 
 @app.get("/content/{topic}", response_model=ContentWithItems)
 async def get_content(topic: str):
@@ -500,38 +480,3 @@ def generate_personalized_recommendations(user, activities, performance_analysis
     recommendations.sort(key=lambda x: priority_order.get(x["priority"], 3))
     
     return recommendations[:5]  # Return top 5 recommendations
-
-@app.get("/ai/topics")
-async def get_ai_topics():
-    """
-    Get available constitutional topics for AI content generation.
-    """
-    return {"topics": get_available_topics()}
-
-@app.post("/ai/generate-content")
-async def generate_ai_content(
-    request: AIContentRequest,
-    current_user = Depends(get_current_user)
-):
-    """
-    Generate legal content using AI for the specified topic and content type.
-    """
-    if not settings.ai_api_key:
-        raise HTTPException(status_code=503, detail="AI service is not configured")
-
-    try:
-        result = generate_legal_content(
-            topic=request.topic,
-            content_type=request.content_type,
-            difficulty=request.difficulty,
-            count=request.count,
-            age_group=request.age_group
-        )
-
-        if not result["success"]:
-            raise HTTPException(status_code=500, detail=result["error"])
-
-        return result
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Content generation failed: {str(e)}")

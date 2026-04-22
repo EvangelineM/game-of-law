@@ -13,7 +13,6 @@ class Settings(BaseSettings):
     # Get MongoDB URL from environment or use a fallback
     mongodb_url: str = os.getenv("MONGODB_URL", MONGODB_FALLBACK)
     database_name: str = os.getenv("DATABASE_NAME", "constitution_db")
-    ai_api_key: Optional[str] = os.getenv("AI_API_KEY")
     mongodb_db: str = os.getenv("MONGODB_DB", "game_of_law")
     jwt_secret: str = os.getenv("JWT_SECRET", "Evangelineketu123")  # Default for development only
     access_token_expire_minutes: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "60"))

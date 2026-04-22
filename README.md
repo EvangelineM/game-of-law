@@ -1,12 +1,11 @@
 # Game of Law: Constitution Learning Platform
 
-An interactive, gamified platform to learn about the Indian Constitution through games, quizzes, and AI-generated content.
+An interactive, gamified platform to learn about the Indian Constitution through games and quizzes.
 
 ## Features
 
 - 🎮 **Interactive Games**: Spin wheel, card matching, crossword puzzles, and situation-based games
 - 📚 **Learning Modules**: Comprehensive content about the Indian Constitution
-- 🤖 **AI Content Generation**: Dynamic content creation using Google Gemini AI
 - 🏆 **Gamification**: XP system, levels, leaderboards, and achievements
 - 👥 **Multi-age Support**: Content tailored for children, teens, and adults
 - 📊 **Progress Tracking**: Detailed analytics and personalized recommendations
@@ -16,7 +15,6 @@ An interactive, gamified platform to learn about the Indian Constitution through
 - **Frontend**: React.js with Tailwind CSS
 - **Backend**: FastAPI with Python
 - **Database**: MongoDB
-- **AI**: Google Gemini AI for content generation
 - **Authentication**: JWT tokens
 
 ## Project Structure
@@ -103,23 +101,6 @@ npm start
 
 Visit `http://localhost:3000` to access the application.
 
-## AI Content Generation Setup
-
-1. Get a Google Gemini AI API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Add the key to `backend/.env`:
-   ```
-   AI_API_KEY=your_actual_api_key_here
-   ```
-3. Restart the backend server
-4. Access the AI Content Generator from the navigation menu
-
-### AI Features
-
-- **Dynamic Questions**: Generate multiple-choice questions on any constitutional topic
-- **Real Scenarios**: Create situation-based learning content
-- **Explanations**: Get comprehensive explanations with examples
-- **Fun Facts**: Generate interesting constitutional facts
-
 ## API Documentation
 
 ### Authentication Endpoints
@@ -130,10 +111,6 @@ Visit `http://localhost:3000` to access the application.
 ### Content Endpoints
 - `GET /content/{topic}` - Get learning content
 - `GET /quizzes/{topic}` - Get quiz questions
-
-### AI Endpoints
-- `GET /ai/topics` - Get available topics for AI generation
-- `POST /ai/generate-content` - Generate AI content
 
 ### Game Endpoints
 - `POST /log-activity` - Log user activities and award XP
